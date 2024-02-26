@@ -1,0 +1,6 @@
+{
+    "query_token_url": "https://smt.esante.gouv.fr/ans/sso/auth/realms/ANS/protocol/openid-connect/token",
+    "client_id": "user-api",
+    "refresh_token": "ey...",
+    "content_type": "application/x-www-form-urlencoded"
+}
