@@ -34,6 +34,9 @@ import json
 
 import requests
 
+from bla import utils
+from schemas import token_data
+
 
 class AccessTokenRetriever:
     """
@@ -59,24 +62,9 @@ class AccessTokenRetriever:
         Args:
             config_path (str): The path to the configuration file.
         """
-        self.config = self.load_config(config_path)
+        self.config = utils.load_config(config_path)
         self.query_token_url = self.config["query_token_url"]
-        self.client_id = self.config["client_id"]
-        self.refresh_token = self.config["refresh_token"]
         self.content_type = self.config["content_type"]
-
-    def load_config(self, config_path: str) -> dict:
-        """
-        Read the configuration file
-
-        Args:
-            config_path (str): The path to the configuration file.
-
-        Returns:
-            dict: Configuratino parameters
-        """
-        with open(config_path, "r", encoding="utf-8") as file:
-            return json.load(file)
 
     def get_access_token(self, mail: str, password: str) -> str | None:
         """
@@ -92,13 +80,7 @@ class AccessTokenRetriever:
         """
         headers = {"Content-Type": self.content_type}
 
-        data = {
-            "grant_type": "password",
-            "client_id": self.client_id,
-            "username": f"{mail}",
-            "password": f"{password}",
-            "refresh_token": self.refresh_token,
-        }
+        data = token_data.TokenData(password=password, email=mail).model_dump()
 
         try:
             response = requests.post(
