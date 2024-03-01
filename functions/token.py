@@ -101,7 +101,12 @@ class AccessTokenRetriever:
         }
 
         try:
-            response = requests.post(self.query_token_url, headers=headers, data=data)
+            response = requests.post(
+                self.query_token_url,
+                headers=headers,
+                data=data,
+                timeout=20,
+            )
             response.raise_for_status()
             result = json.loads(response.text)
             return result["access_token"]
