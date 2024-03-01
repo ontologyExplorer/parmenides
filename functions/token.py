@@ -4,8 +4,7 @@ import requests
 
 
 class AccessTokenRetriever:
-    
-    """ 
+    """
     Retrieving the Token Access for the API.
     Before using this application be sure to create an account at https://smt.esante.gouv.fr.
     The method get_access_token will send a POST request to the API using the specific https://smt.esante.gouv.fr user's credentials.
@@ -21,7 +20,6 @@ class AccessTokenRetriever:
     """
 
     def __init__(self, config_path="functions/config_token.json"):
-
         """
         Initializes the AccessTokenRetriever using a configuration file.
 
@@ -34,10 +32,10 @@ class AccessTokenRetriever:
         self.refresh_token = self.config["refresh_token"]
         self.content_type = self.config["content_type"]
 
-    def load_config(self, config_path: str)->dict:
+    def load_config(self, config_path: str) -> dict:
         """
         Read the configuration file
-        
+
         Args:
             config_path (str): The path to the configuration file.
 
@@ -47,12 +45,12 @@ class AccessTokenRetriever:
         with open(config_path, "r") as file:
             return json.load(file)
 
-    def get_access_token(self, mail: str, password: str) -> str|None:
+    def get_access_token(self, mail: str, password: str) -> str | None:
         """
         Send a POST request to the API using the specific https://smt.esante.gouv.fr user's credentials
 
         Args:
-            mail (str): User's mail 
+            mail (str): User's mail
             password (str):User's password
 
         Returns:
