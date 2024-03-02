@@ -1,3 +1,5 @@
+"""Retrieving the Token Access for the API."""
+
 import json
 from pathlib import Path
 
