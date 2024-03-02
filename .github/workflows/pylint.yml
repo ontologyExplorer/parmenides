@@ -18,11 +18,9 @@ jobs:
       run: |
         curl -sSL https://install.python-poetry.org | python3 -
         echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-    - name: Change directory to /api
-      run: cd api
     - name: Install dependencies
       run: |
-        poetry install
+        cd api && poetry install
     - name: Analysing the code with pylint
       run: |
         poetry run pylint $(git ls-files '*.py')
