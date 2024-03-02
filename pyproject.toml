@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ontologies-explorer"
+version = "0.1.0"
+description = ""
+authors = ["Goldensteev <fletcher.steven@hotmail.fr>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.31.0"
+pydantic = {extras = ["email"], version = "^2.6.3"}
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+flake8 = "^7.0.0"
+isort = "^5.13.2"
+mypy = "^1.8.0"
+pylint = "^3.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
