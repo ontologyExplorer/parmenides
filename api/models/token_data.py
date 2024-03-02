@@ -1,11 +1,16 @@
-from pydantic import EmailStr, BaseModel
-from bla.utils import load_config
+"""Models for the ANS API token"""
+
+from pathlib import Path
+
+from pydantic import BaseModel, EmailStr
+
+from api.utils import load_config
 
 
 class ReadConfig(BaseModel):
     """the ReadConfig class"""
 
-    config: dict[str, str] = load_config("functions/config_token.json")
+    config: dict[str, str] = load_config(Path("config/token.json"))
 
 
 class TokenData(BaseModel):
