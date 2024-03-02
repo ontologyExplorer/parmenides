@@ -1,4 +1,4 @@
-from api.src.token import get_access_token
+from src.token import get_access_token
 
 
 def main():

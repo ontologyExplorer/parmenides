@@ -4,7 +4,7 @@ from pathlib import Path
 
 from pydantic import BaseModel, EmailStr
 
-from api.utils import load_config
+from utils import load_config
 
 
 class ReadConfig(BaseModel):

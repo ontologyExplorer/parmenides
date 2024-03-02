@@ -3,8 +3,8 @@ from pathlib import Path
 
 import requests
 
-from api.models import token_data
-from api.utils import load_config
+from models import token_data
+from utils import load_config
 
 
 def get_access_token(email: str, password: str) -> str | None:
