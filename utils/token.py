@@ -26,10 +26,10 @@ def get_access_token(email: str, password: str) -> str | None:
     Returns:
         token (str): connection token
     """
-    config = load_config(Path("config/token.json"))
+    config = load_config(Path("config/token.json"))  # type: ignore
     headers = {"Content-Type": config["content_type"]}
 
-    data = token_data.TokenData(password=password, email=email).model_dump()
+    data = token_data.TokenData(password=password, email=email).model_dump()  # type: ignore
 
     try:
         response = requests.post(
@@ -41,6 +41,32 @@ def get_access_token(email: str, password: str) -> str | None:
         response.raise_for_status()
         result = json.loads(response.text)
         return result["access_token"]
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        return None
+
+
+def _get_value_sets(token: str) -> dict | None:
+    """
+    Retrieves the availables ValueSets in the SMT server.
+
+    Args:
+        token (str): connection token obtained with get_access_token
+    Returns:
+        Bundle (dict): FHIR Bundle resource containing the available ValueSets (https://build.fhir.org/bundle.html)
+    """
+
+    query_vs = "https://smt.esante.gouv.fr/fhir/ValueSet?_summary=true"
+    headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
+
+    try:
+        response = requests.get(
+            query_vs,
+            headers=headers,
+        )
+        response.raise_for_status()
+        result = json.loads(response.text)
+        return result
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
         return None
