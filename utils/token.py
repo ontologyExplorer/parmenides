@@ -53,7 +53,8 @@ def _get_value_sets(token: str) -> dict | None:
     Args:
         token (str): connection token obtained with get_access_token
     Returns:
-        Bundle (dict): FHIR Bundle resource containing the available ValueSets (https://build.fhir.org/bundle.html)
+        Bundle (dict): FHIR Bundle resource containing the available ValueSets
+        (https://build.fhir.org/bundle.html)
     """
 
     query_vs = "https://smt.esante.gouv.fr/fhir/ValueSet?_summary=true"
@@ -63,6 +64,7 @@ def _get_value_sets(token: str) -> dict | None:
         response = requests.get(
             query_vs,
             headers=headers,
+            timeout=20,
         )
         response.raise_for_status()
         result = json.loads(response.text)
