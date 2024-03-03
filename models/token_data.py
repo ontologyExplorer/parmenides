@@ -10,7 +10,7 @@ from utils import load_config
 class ReadConfig(BaseModel):
     """the ReadConfig class"""
 
-    config: dict[str, str] = load_config(Path("config/token.json"))
+    config: dict[str, str] = load_config(Path("config/token.json"))  # type: ignore
 
 
 class TokenData(BaseModel):
