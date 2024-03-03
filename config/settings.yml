@@ -1,0 +1,6 @@
+fhir_api_base: "https://smt.esante.gouv.fr/fhir/"
+endpoints:
+  list_vs: "ValueSet?_summary=true"
+  list_cs: "CodeSystem?_summary=true"
+  search_term: "ValueSet/$expand?url={url}&filter={filters}"
+  search_code: "CodeSystem/$lookup?system={url}&code={code}"
