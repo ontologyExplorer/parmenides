@@ -1,3 +1,4 @@
+"""HAPI FHIR queries"""
 import json
 
 import requests
@@ -15,7 +16,7 @@ def build_url(endpoint: str):
         url (str): the searching query
     """
 
-    with open("../config/settings.yml", "r") as yaml_file:
+    with open("../config/settings.yml", "r", encoding="utf-8") as yaml_file:
         config = yaml.safe_load(yaml_file)
 
     url_base = config["fhir_api_base"]
@@ -24,7 +25,7 @@ def build_url(endpoint: str):
     return url_base + url_endpoint
 
 
-def get_value_sets(token: str, endpoint: str = "list_vs") -> dict | None:
+def get_value_sets(token: str) -> dict | None:
     """
     Retrieves the availables ValueSets in the SMT server.
 
