@@ -2,7 +2,7 @@
 name = "ontologies-explorer"
 version = "0.1.0"
 description = ""
-authors = ["Goldensteev <fletcher.steven@hotmail.fr>"]
+authors = ["lnmylos" <elenamylonas@gmail.com>", "Goldensteev <fletcher.steven@hotmail.fr>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
