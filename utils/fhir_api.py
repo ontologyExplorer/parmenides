@@ -1,5 +1,7 @@
 """HAPI FHIR queries"""
+
 import json
+from pathlib import Path
 
 import requests
 import yaml
@@ -16,7 +18,7 @@ def build_url(endpoint: str):
         url (str): the searching query
     """
 
-    with open("../config/settings.yml", "r", encoding="utf-8") as yaml_file:
+    with open(Path("config", "settings.yml"), "r", encoding="utf-8") as yaml_file:
         config = yaml.safe_load(yaml_file)
 
     url_base = config["fhir_api_base"]
@@ -31,6 +33,7 @@ def get_value_sets(token: str) -> dict | None:
 
     Args:
         token (str): connection token obtained with get_access_token
+
     Returns:
         Bundle (dict): FHIR Bundle resource containing the available ValueSets
         (https://build.fhir.org/bundle.html)
