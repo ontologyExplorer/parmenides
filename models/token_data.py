@@ -8,6 +8,7 @@ from utils import load_config
 
 
 class ReadConfig(BaseModel):
+    """the ReadConfig Data class"""
 
     config: dict[str, str] = load_config(Path("config", "token.json"))
 
