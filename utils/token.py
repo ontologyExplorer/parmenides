@@ -26,7 +26,7 @@ def get_access_token(email: str, password: str) -> str | None:
     Returns:
         token (str): connection token
     """
-    config = load_config(Path("config/token.json"))  # type: ignore
+    config = load_config(Path("config", "token.json"))  # type: ignore
     headers = {"Content-Type": config["content_type"]}
 
     data = token_data.TokenData(password=password, email=email).model_dump()  # type: ignore
