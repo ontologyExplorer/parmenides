@@ -4,13 +4,13 @@ from pathlib import Path
 
 from pydantic import BaseModel, EmailStr
 
-from utils import load_config
+from utils import load_json_file
 
 
 class ReadConfig(BaseModel):
     """the ReadConfig Data class"""
 
-    config: dict[str, str] = load_config(Path("config", "token.json"))
+    config: dict[str, str] = load_json_file(Path("config", "token.json"))
 
 
 class TokenData(BaseModel):

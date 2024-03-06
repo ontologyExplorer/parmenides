@@ -6,7 +6,7 @@ from pathlib import Path
 import requests
 
 from models import token_data
-from utils import load_config
+from utils import load_json_file
 
 
 def get_access_token(email: str, password: str) -> str | None:
@@ -21,12 +21,12 @@ def get_access_token(email: str, password: str) -> str | None:
 
     Args:
         email (str): User's email
-        password (str):User's password
+        password (str): User's password
 
     Returns:
         token (str): connection token
     """
-    config = load_config(Path("config", "token.json"))  # type: ignore
+    config = load_json_file(Path("config", "token.json"))  # type: ignore
     headers = {"Content-Type": config["content_type"]}
 
     data = token_data.TokenData(password=password, email=email).model_dump()  # type: ignore
