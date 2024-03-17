@@ -15,7 +15,7 @@ class ConfigSettings(BaseModel):
 
 
 @pytest.fixture
-def mock_config(tmp_path) -> str:
+def tmp_config(tmp_path) -> str:
     """
     Create a temporary .yml configuration file.
     Args:
@@ -36,11 +36,11 @@ def mock_config(tmp_path) -> str:
     return str(config_file)
 
 
-def test_build_url(mock_config):
+def test_build_url(temp_config):
     """
     Test for the build_url function
     Args:
         mock_config (str): Path to the mock configuration file.
     """
     expected_url = "https://github.com/octocat?tab=following"
-    assert build_url(config=mock_config, endpoint="search") == expected_url
+    assert build_url(config=temp_config, endpoint="search") == expected_url
