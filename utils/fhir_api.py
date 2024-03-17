@@ -6,8 +6,10 @@ from pathlib import Path
 import requests
 import yaml
 
+PATH_CONFIG = Path("config", "settings.yml")
 
-def build_url(endpoint: str):
+
+def build_url(config=PATH_CONFIG, endpoint: str = "") -> str:
     """
     Dynamically building the searching query
 
@@ -17,8 +19,7 @@ def build_url(endpoint: str):
     Returns:
         url (str): the searching query
     """
-
-    with open(Path("config", "settings.yml"), "r", encoding="utf-8") as yaml_file:
+    with open(config, "r", encoding="utf-8") as yaml_file:
         config = yaml.safe_load(yaml_file)
 
     url_base = config["fhir_api_base"]
