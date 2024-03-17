@@ -1,3 +1,4 @@
+"""Test for the FHIR API functions """
 import pytest
 import yaml
 from pydantic import BaseModel
