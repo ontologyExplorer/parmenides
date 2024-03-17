@@ -1,15 +1,30 @@
 """HAPI FHIR queries"""
-
 import json
 from pathlib import Path
 
 import requests
 import yaml
 
-PATH_CONFIG = Path("config", "settings.yml")
+config_path = Path("config", "settings.yml")
 
 
-def build_url(config=PATH_CONFIG, endpoint: str = "") -> str:
+def load_config(config_file_path: Path) -> dict:
+    """
+    Opening configurqtion file
+
+    Args:
+        config_path (str): Defaults to PATH_CONFIG.
+
+    Returns:
+        str: dictionary with the urls and endpoints.
+    """
+
+    with open(config_file_path, "r", encoding="utf-8") as yaml_file:
+        config_data = yaml.safe_load(yaml_file)
+    return config_data
+
+
+def build_url(config_data: dict, endpoint: str) -> str:
     """
     Dynamically building the searching query
 
@@ -19,11 +34,9 @@ def build_url(config=PATH_CONFIG, endpoint: str = "") -> str:
     Returns:
         url (str): the searching query
     """
-    with open(config, "r", encoding="utf-8") as yaml_file:
-        config = yaml.safe_load(yaml_file)
 
-    url_base = config["fhir_api_base"]
-    url_endpoint = config["endpoints"].get(endpoint)
+    url_base = str(config_data["fhir_api_base"])
+    url_endpoint = str(config_data["endpoints"].get(endpoint))
 
     return url_base + url_endpoint
 
@@ -39,8 +52,8 @@ def get_value_sets(token: str) -> dict | None:
         Bundle (dict): FHIR Bundle resource containing the available ValueSets
         (https://build.fhir.org/bundle.html)
     """
-
-    query_vs = build_url(endpoint="list_vs")
+    config_data = load_config(config_file_path=config_path)
+    query_vs = build_url(config_data, endpoint="list_vs")
 
     headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
 
