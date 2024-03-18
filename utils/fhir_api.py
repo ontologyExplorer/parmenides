@@ -1,9 +1,9 @@
 """HAPI FHIR queries"""
-import json
 from pathlib import Path
 
-import requests
 import yaml
+
+from utils import query_api
 
 config_path = Path("config", "settings.yml")
 
@@ -54,18 +54,6 @@ def get_value_sets(token: str) -> dict | None:
     """
     config_data = load_config(config_file_path=config_path)
     query_vs = build_url(config_data, endpoint="list_vs")
-
     headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
-
-    try:
-        response = requests.get(
-            query_vs,
-            headers=headers,
-            timeout=20,
-        )
-        response.raise_for_status()
-        result = json.loads(response.text)
-        return result
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-        return None
+    response = query_api(url=query_vs, headers=headers)
+    return response
