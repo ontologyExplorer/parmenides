@@ -5,7 +5,7 @@ import yaml
 
 from utils import query_api
 
-config_path = Path("config", "settings.yml")
+config_path = Path("..", "config", "settings.yml")
 
 
 def load_config(config_file_path: Path) -> dict:
