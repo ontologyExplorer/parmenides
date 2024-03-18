@@ -1,7 +1,7 @@
 # Parmenides
 
 Welcome to Parmenides Backend, the backend component of the Parmenides project.
-Parmenides is a web application designed to streamlineinteractions with the [Serveur Multi-Terminologies](https://smt.esante.gouv.fr/api-docs/), hosted by the [Agence du Numerique en Santé](https://esante.gouv.fr/).
+Parmenides is a web application designed to streamline interactions with the [Serveur Multi-Terminologies](https://smt.esante.gouv.fr/api-docs/), hosted by the [Agence du Numerique en Santé](https://esante.gouv.fr/).
 
 ## Key Features
 
