@@ -22,7 +22,7 @@ class UrlToken(BaseModel):
 class HeaderToken(BaseModel):
     """the authentification header class"""
 
-    content_type: str = Field("application/x-www-form-urlencoded", alias="Content-Type")
+    content_type: str = Field(ReadConfig().config["content_type"], alias="Content-Type")
 
 
 class TokenData(BaseModel):
