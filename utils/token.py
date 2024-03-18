@@ -1,15 +1,13 @@
 """Retrieving the Token Access for the API."""
 
 import json
-from pathlib import Path
 
 import requests
 
 from models import token_data
-from utils import load_json_file
 
 
-def get_access_token(email: str, password: str) -> str | None:
+def get_access_token(username: str, password: str) -> str | None:
     """
     Retrieving the Token Access for the API.
     Before using this application be sure to create an account at https://smt.esante.gouv.fr.
@@ -26,14 +24,14 @@ def get_access_token(email: str, password: str) -> str | None:
     Returns:
         token (str): connection token
     """
-    config = load_json_file(Path("config", "token.json"))
-    headers = {"Content-Type": config["content_type"]}
 
-    data = token_data.TokenData(password=password, email=email).model_dump()  # type: ignore
+    headers = token_data.HeaderToken().dict(by_alias=True)  # type: ignore
+    url = token_data.UrlToken().dict()["url_token"]
+    data = token_data.TokenData(password=password, username=username).dict()  # type: ignore
 
     try:
         response = requests.post(
-            config["query_token_url"],
+            url,
             headers=headers,
             data=data,
             timeout=20,
