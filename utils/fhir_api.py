@@ -41,9 +41,9 @@ def build_url(config_data: dict, endpoint: str) -> str:
     return url_base + url_endpoint
 
 
-def get_value_sets(token: str) -> dict | None:
+def get_value_sets(token: str, endpoint: str) -> dict | None:
     """
-    Retrieves the availables ValueSets in the SMT server.
+    Retrieves the availables ValueSets or Code Systems in the SMT server.
 
     Args:
         token (str): connection token obtained with get_access_token
@@ -53,7 +53,7 @@ def get_value_sets(token: str) -> dict | None:
         (https://build.fhir.org/bundle.html)
     """
     config_data = load_config(config_file_path=config_path)
-    query_vs = build_url(config_data, endpoint="list_vs")
+    query_vs = build_url(config_data, endpoint=endpoint)
     headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
     response = query_api(url=query_vs, headers=headers)
     return response
