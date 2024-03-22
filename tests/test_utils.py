@@ -30,14 +30,14 @@ def test_query_api(mock_requests_get, status_code, expected_result) -> None:
     "utils.requests.get",
     side_effect=requests.exceptions.RequestException("Error"),
 )
-def test_exception_query_api(mock_requests_get):
+def test_exception_query_api(result) -> None:
     """Error handling test for quey_api"""
 
     result = query_api(url="http://example.com/api", headers={}, timeout=20)
     assert result is None
 
 
-def test_load_json_file():
+def test_load_json_file() -> None:
     """Test for the load_json_file function"""
     data = {"key": "value"}
     assert load_json_file("tests/test.json") == data
