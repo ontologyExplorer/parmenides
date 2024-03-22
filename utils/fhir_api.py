@@ -74,26 +74,9 @@ def get_value_sets(token: str, endpoint: str) -> dict | None:
     return response
 
 
-def get_implicit_valueset(codesystem: dict) -> list | None:
-    """
-    Return the implicit ValueSets availables for CodeSystem
-    Args:
-        codesystem (dict): Dictionary containing the information from each CodeSystem
-        available in the SMT server.
-    Returns:
-        list|None: List of implicit valuesets
-    """
-
-    imp_vs = []
-    for vs in codesystem["entry"]:
-        if "valueSet" in vs["resource"]:
-            imp_vs.append(vs["resource"]["valueSet"])
-    return imp_vs
-
-
 def search_term(token: str, url: str, term: str) -> dict | None:
     """
-    Search the term in the implicit value sets from different CodeSystem.
+    Search the term in the specified implicit value set.
 
     Args:
         token (str): connection token obtained with get_access_token
@@ -107,6 +90,27 @@ def search_term(token: str, url: str, term: str) -> dict | None:
     endpoint = "search_term"
     config_data = load_config(config_file_path=config_path)
     query_vs = build_url(config_data, endpoint, url=url, term=term)
+    headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
+    response = query_api(url=query_vs, headers=headers)
+    return response
+
+
+def search_code(token: str, url: str, code: str) -> dict | None:
+    """
+    Search the code in the specified Code System.
+
+    Args:
+        token (str): connection token obtained with get_access_token
+        url (str): Code System to be searched
+        term (str): code to be searched
+
+    Returns:
+        Bundle (dict): FHIR Bundle resource containing the result of the search
+        (https://build.fhir.org/bundle.html)
+    """
+    endpoint = "search_code"
+    config_data = load_config(config_file_path=config_path)
+    query_vs = build_url(config_data, endpoint, url=url, code=code)
     headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
     response = query_api(url=query_vs, headers=headers)
     return response
