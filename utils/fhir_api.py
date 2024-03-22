@@ -24,7 +24,7 @@ def load_config(config_file_path: Path) -> dict:
     return config_data
 
 
-def build_url(config_data: dict, endpoint: str) -> str:
+def build_url(config_data: dict, endpoint: str, **kwargs) -> str:
     """
     Dynamically building the searching query
 
@@ -34,16 +34,31 @@ def build_url(config_data: dict, endpoint: str) -> str:
     Returns:
         url (str): the searching query
     """
+    url = kwargs.get("url", None)
+    term = kwargs.get("term", None)
+    code = kwargs.get("code", None)
 
     url_base = str(config_data["fhir_api_base"])
-    url_endpoint = str(config_data["endpoints"].get(endpoint))
+
+    if term:
+        kwargs["term"] = url_endpoint = str(
+            config_data["endpoints"].get(endpoint)
+        ).format(url, term)
+
+    elif code:
+        kwargs["code"] = url_endpoint = str(
+            config_data["endpoints"].get(endpoint)
+        ).format(url, code)
+
+    else:
+        url_endpoint = str(config_data["endpoints"].get(endpoint))
 
     return url_base + url_endpoint
 
 
 def get_value_sets(token: str, endpoint: str) -> dict | None:
     """
-    Retrieves the availables ValueSets or Code Systems in the SMT server.
+    Retrieves the availables Value Sets or Code Systems in the SMT server.
 
     Args:
         token (str): connection token obtained with get_access_token
@@ -54,6 +69,44 @@ def get_value_sets(token: str, endpoint: str) -> dict | None:
     """
     config_data = load_config(config_file_path=config_path)
     query_vs = build_url(config_data, endpoint=endpoint)
+    headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
+    response = query_api(url=query_vs, headers=headers)
+    return response
+
+
+def get_implicit_valueset(codesystem: dict) -> list | None:
+    """
+    Return the implicit ValueSets availables for CodeSystem
+    Args:
+        codesystem (dict): Dictionary containing the information from each CodeSystem
+        available in the SMT server.
+    Returns:
+        list|None: List of implicit valuesets
+    """
+
+    imp_vs = []
+    for vs in codesystem["entry"]:
+        if "valueSet" in vs["resource"]:
+            imp_vs.append(vs["resource"]["valueSet"])
+    return imp_vs
+
+
+def search_term(token: str, url: str, term: str) -> dict | None:
+    """
+    Search the term in the implicit value sets from different CodeSystem.
+
+    Args:
+        token (str): connection token obtained with get_access_token
+        url (str): implicit value set to be searched
+        term (str): term to be searched
+
+    Returns:
+        Bundle (dict): FHIR Bundle resource containing the result of the search
+        (https://build.fhir.org/bundle.html)
+    """
+    endpoint = "search_term"
+    config_data = load_config(config_file_path=config_path)
+    query_vs = build_url(config_data, endpoint, url=url, term=term)
     headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
     response = query_api(url=query_vs, headers=headers)
     return response
