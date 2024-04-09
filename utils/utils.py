@@ -35,15 +35,15 @@ def get_code_label(result: dict) -> dict | None:
     label = None
     vocabulary = None
 
-    for i in result["parameter"]:
-        if i["name"] == "code":
-            code = i["valueCode"]
+    for parameter in result["parameter"]:
+        if parameter["name"] == "code":
+            code = parameter["valueCode"]
 
-        if i["name"] == "display":
-            label = i["valueString"]
+        if parameter["name"] == "display":
+            label = parameter["valueString"]
 
-        if i["name"] == "name":
-            vocabulary = i["valueString"]
+        if parameter["name"] == "name":
+            vocabulary = parameter["valueString"]
 
     return {"code": code, "label": label, "vocabulary": vocabulary}
 
@@ -78,12 +78,13 @@ def get_relations(token: str, result: dict) -> dict | None:
                 child = parameter["part"][1]["valueCode"]
                 children.append(child)
 
-    for parent in parents:
-        codes_parents = search_code(token=token, url=url, code=parent)  # type: ignore
-        relations["parents"].append(get_code_label(codes_parents))  # type: ignore
+    codes = {code: [] for code in set(parents + children)}
 
-    for child in children:
-        codes_children = search_code(token=token, url=url, code=child)  # type: ignore
-        relations["children"].append(get_code_label(codes_children))  # type: ignore
+    for code in codes.keys():
+        code_result = search_code(token=token, url=url, code=code)  # type: ignore
+        codes[code] = get_code_label(code_result)  # type: ignore
+
+    relations["parents"] = [codes[parent] for parent in parents]
+    relations["children"] = [codes[child] for child in children]
 
     return relations

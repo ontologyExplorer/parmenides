@@ -53,7 +53,7 @@ def build_url(config_data: dict, endpoint: str, **kwargs) -> str:
     else:
         url_endpoint = str(config_data["endpoints"].get(endpoint))
 
-    return url_base + url_endpoint
+    return f"{url_base}{url_endpoint}"
 
 
 def get_value_sets(token: str, endpoint: str) -> dict | None:
