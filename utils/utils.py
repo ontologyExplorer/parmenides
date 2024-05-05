@@ -81,7 +81,11 @@ def get_relations(token: str, result: dict) -> dict | None:
     codes = {code: [] for code in set(parents + children)}
 
     for code in codes.keys():
-        code_result = search_fhir_api(token=token, url=url, search_param="code", value=code)  # type: ignore
+        code_result = search_fhir_api(
+            token=token,
+            url=url, # type: ignore
+            search_param="code",
+            value=code)
         codes[code] = get_code_label(code_result)  # type: ignore
 
     relations["parents"] = [codes[parent] for parent in parents]
