@@ -104,4 +104,3 @@ def search_fhir_api(token: str, url: str, search_param: str, value: str) -> dict
     response = query_api(url=query_vs, headers=headers)
 
     return response
-    
