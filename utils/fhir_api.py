@@ -73,44 +73,35 @@ def get_value_sets(token: str, endpoint: str) -> dict | None:
     response = query_api(url=query_vs, headers=headers)
     return response
 
-
-def search_term(token: str, url: str, term: str) -> dict | None:
+def search_fhir_api(token: str, url: str, search_param: str, value: str) -> dict | None:
     """
-    Search the term in the specified implicit value set.
+    Search for a specified parameter (term or code) value in the given FHIR ValueSet.
 
     Args:
-        token (str): connection token obtained with get_access_token
-        url (str): implicit value set to be searched
-        term (str): term to be searched
+        token (str): Connection token obtained with get_access_token.
+        url (str):  implicit value set to be searched
+        search_param (str): Parameter to be searched: term or code.
+        value (str): Value corresponding to the search parameter, the term or the code.
 
     Returns:
-        Bundle (dict): FHIR Bundle resource containing the result of the search
-        (https://build.fhir.org/bundle.html)
+        dict | None: FHIR Bundle resource containing the result of the search
+        (https://build.fhir.org/bundle.html) or None.
     """
-    endpoint = "search_term"
+    # Determine the endpoint based on the search parameter
+    if search_param == "term":
+        endpoint = "search_term"
+    elif search_param == "code":
+        endpoint = "search_code"
+    else:
+        raise ValueError("Invalid search parameter. Supported parameters are 'term' and 'code'.")
+
+    # Load configuration data and build the query URL
     config_data = load_config(config_file_path=config_path)
-    query_vs = build_url(config_data, endpoint, url=url, term=term)
+    query_vs = build_url(config_data, endpoint, url=url, **{search_param: value})
+
+    # Set headers and query the API
     headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
     response = query_api(url=query_vs, headers=headers)
+
     return response
-
-
-def search_code(token: str, url: str, code: str) -> dict | None:
-    """
-    Search the code in the specified Code System.
-
-    Args:
-        token (str): connection token obtained with get_access_token
-        url (str): Code System to be searched
-        term (str): code to be searched
-
-    Returns:
-        Bundle (dict): FHIR Bundle resource containing the result of the search
-        (https://build.fhir.org/bundle.html)
-    """
-    endpoint = "search_code"
-    config_data = load_config(config_file_path=config_path)
-    query_vs = build_url(config_data, endpoint, url=url, code=code)
-    headers = {"Authorization": f"{token}", "Content-Type": "application/json+fhir"}
-    response = query_api(url=query_vs, headers=headers)
-    return response
+    

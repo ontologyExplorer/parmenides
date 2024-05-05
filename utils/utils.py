@@ -1,5 +1,5 @@
 """treatment of the search ouputs results"""
-from utils.fhir_api import search_code
+from utils.fhir_api import search_fhir_api
 
 
 def get_implicit_valueset(codesystem: dict) -> list | None:
@@ -81,7 +81,7 @@ def get_relations(token: str, result: dict) -> dict | None:
     codes = {code: [] for code in set(parents + children)}
 
     for code in codes.keys():
-        code_result = search_code(token=token, url=url, code=code)  # type: ignore
+        code_result = search_fhir_api(token=token, url=url, search_param="code", value=code)  # type: ignore
         codes[code] = get_code_label(code_result)  # type: ignore
 
     relations["parents"] = [codes[parent] for parent in parents]
