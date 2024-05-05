@@ -2,13 +2,15 @@
 name = "ontologies-explorer"
 version = "0.1.0"
 description = ""
-authors = ["Goldensteev <fletcher.steven@hotmail.fr>"]
+authors = ["lnmylos <elenamylonas@gmail.com>", "Goldensteev <fletcher.steven@hotmail.fr>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "^2.31.0"
+PyYAML = "^6.0.1"
 pydantic = {extras = ["email"], version = "^2.6.3"}
+pytest = "^8.1.1"
 
 
 [tool.poetry.group.dev.dependencies]
